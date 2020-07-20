@@ -14,7 +14,7 @@ use function count;
 
 class TableReservationRepositoryTest extends KernelTestCase
 {
-    private EntityManagerInterface $em;
+    private ?EntityManagerInterface $em;
 
     private TableReservationRepository $repo;
 
@@ -27,6 +27,14 @@ class TableReservationRepositoryTest extends KernelTestCase
             ->getManager();
 
         $this->repo = $this->em->getRepository(TableReservation::class);
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        $this->em->close();
+        $this->em = null;
     }
 
     /**
