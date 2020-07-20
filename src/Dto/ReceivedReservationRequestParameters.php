@@ -9,9 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Assert\GroupSequence({
- *     "ValidDate",
- *     "ExistentTableId",
  *     "ReceivedReservationRequestParameters",
+ *     "ValidDateTime",
+ *     "SameDate",
  *     "ReservationInterval"
  * })
  */
@@ -26,17 +26,11 @@ final class ReceivedReservationRequestParameters
     const INVALID_TIME_FORMAT_MESSAGE = 'Invalid time format, supported time format is YYYY-MM-DD HH:MM';
 
     /**
-     * @Assert\NotNull(
-     *     message = ReceivedReservationRequestParameters::REQUIRED_PARAMETER_MESSAGE,
-     *     groups = {"ValidDate"}
-     * )
-     * @Assert\NotBlank(
-     *     message = ReceivedReservationRequestParameters::REQUIRED_PARAMETER_MESSAGE,
-     *     groups = {"ValidDate"}
-     * )
+     * @Assert\NotNull(message = ReceivedReservationRequestParameters::REQUIRED_PARAMETER_MESSAGE)
+     * @Assert\NotBlank(message = ReceivedReservationRequestParameters::REQUIRED_PARAMETER_MESSAGE)
      * @Assert\Date(
      *     message = ReceivedReservationRequestParameters::INVALID_DATE_FORMAT_MESSAGE,
-     *     groups = {"ValidDate"}
+     *     groups = {"ValidDateTime"}
      * )
      * @CustomAssert\CurrentDateOrGreater(groups = {"ValidDate"})
      */
@@ -47,9 +41,13 @@ final class ReceivedReservationRequestParameters
      * @Assert\NotBlank(message = ReceivedReservationRequestParameters::REQUIRED_PARAMETER_MESSAGE)
      * @Assert\DateTime(
      *     format = ReceivedReservationRequestParameters::VALID_DATETIME_FORMAT,
-     *     message = ReceivedReservationRequestParameters::INVALID_TIME_FORMAT_MESSAGE
+     *     message = ReceivedReservationRequestParameters::INVALID_TIME_FORMAT_MESSAGE,
+     *     groups = {"ValidDateTime"}
      * )
-     * @CustomAssert\FromDateIsSameAsDate(propertyPath = "date")
+     * @CustomAssert\FromDateIsSameAsDate(
+     *     propertyPath = "date",
+     *     groups = {"SameDate"}
+     * )
      */
     private ?string $from;
 
@@ -58,7 +56,8 @@ final class ReceivedReservationRequestParameters
      * @Assert\NotBlank(message = ReceivedReservationRequestParameters::REQUIRED_PARAMETER_MESSAGE)
      * @Assert\DateTime(
      *     format = ReceivedReservationRequestParameters::VALID_DATETIME_FORMAT,
-     *     message = ReceivedReservationRequestParameters::INVALID_TIME_FORMAT_MESSAGE
+     *     message = ReceivedReservationRequestParameters::INVALID_TIME_FORMAT_MESSAGE,
+     *     groups = {"ValidDateTime"}
      * )
      * @CustomAssert\GreaterByAtLeastHalfAnHour(
      *     propertyPath = "from",
@@ -70,7 +69,7 @@ final class ReceivedReservationRequestParameters
     /**
      * @var int|null
      *
-     * @CustomAssert\ExistentTableId(groups = "ExistentTableId")
+     * @CustomAssert\ExistentTableId
      */
     private $table_id;
 
