@@ -17,17 +17,25 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class ReceivedReservationRequestParameters
 {
+    const VALID_DATETIME_FORMAT = 'Y-m-d H:i';
+
+    const REQUIRED_PARAMETER_MESSAGE = 'Required parameter';
+
+    const INVALID_DATE_FORMAT_MESSAGE = 'Invalid date format, supported date format is YYYY-MM-DD';
+
+    const INVALID_TIME_FORMAT_MESSAGE = 'Invalid time format, supported time format is YYYY-MM-DD HH:MM';
+
     /**
      * @Assert\NotNull(
-     *     message = "Required parameter",
+     *     message = ReceivedReservationRequestParameters::REQUIRED_PARAMETER_MESSAGE,
      *     groups = {"ValidDate"}
      * )
      * @Assert\NotBlank(
-     *     message = "Required parameter",
+     *     message = ReceivedReservationRequestParameters::REQUIRED_PARAMETER_MESSAGE,
      *     groups = {"ValidDate"}
      * )
      * @Assert\Date(
-     *     message = "Invalid date format, supported date format is YYYY-MM-DD",
+     *     message = ReceivedReservationRequestParameters::INVALID_DATE_FORMAT_MESSAGE,
      *     groups = {"ValidDate"}
      * )
      * @CustomAssert\CurrentDateOrGreater(groups = {"ValidDate"})
@@ -35,22 +43,22 @@ final class ReceivedReservationRequestParameters
     private ?string $date;
 
     /**
-     * @Assert\NotNull(message = "Required parameter")
-     * @Assert\NotBlank(message = "Required parameter")
+     * @Assert\NotNull(message = ReceivedReservationRequestParameters::REQUIRED_PARAMETER_MESSAGE)
+     * @Assert\NotBlank(message = ReceivedReservationRequestParameters::REQUIRED_PARAMETER_MESSAGE)
      * @Assert\DateTime(
-     *     format = "Y-m-d H:i",
-     *     message = "Invalid time format, supported time format is YYYY-MM-DD HH:MM"
+     *     format = ReceivedReservationRequestParameters::VALID_DATETIME_FORMAT,
+     *     message = ReceivedReservationRequestParameters::INVALID_TIME_FORMAT_MESSAGE
      * )
      * @CustomAssert\FromDateIsSameAsDate(propertyPath = "date")
      */
     private ?string $from;
 
     /**
-     * @Assert\NotNull(message = "Required parameter")
-     * @Assert\NotBlank(message = "Required parameter")
+     * @Assert\NotNull(message = ReceivedReservationRequestParameters::REQUIRED_PARAMETER_MESSAGE)
+     * @Assert\NotBlank(message = ReceivedReservationRequestParameters::REQUIRED_PARAMETER_MESSAGE)
      * @Assert\DateTime(
-     *     format = "Y-m-d H:i",
-     *     message = "Invalid time format, supported time format is YYYY-MM-DD HH:MM"
+     *     format = ReceivedReservationRequestParameters::VALID_DATETIME_FORMAT,
+     *     message = ReceivedReservationRequestParameters::INVALID_TIME_FORMAT_MESSAGE
      * )
      * @CustomAssert\GreaterByAtLeastHalfAnHour(
      *     propertyPath = "from",
