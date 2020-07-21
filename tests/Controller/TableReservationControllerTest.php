@@ -6,7 +6,6 @@ namespace App\Tests\Controller;
 
 use App\Dto\ReceivedReservationRequestParameters;
 use App\Service\ReservationPriceCalculator;
-use App\Validator\Constraints\CurrentDateOrGreater;
 use App\Validator\Constraints\ExistentTableId;
 use App\Validator\Constraints\FromDateIsSameAsDate;
 use App\Validator\Constraints\GreaterByAtLeastHalfAnHour;
@@ -135,7 +134,7 @@ class TableReservationControllerTest extends WebTestCase
                 ],
                 'expected message' => '"'.self::CONFLICT_MESSAGE_TITLE.'":{"table 1":"2030-12-12 10:00 - 2030-12-12 11:00"}',
             ],
-            0 => [
+            1 => [
                 'request parameters' => [
                     'date' => '2030-12-12',
                     'from' => '2030-12-12 09:00',
@@ -155,13 +154,11 @@ class TableReservationControllerTest extends WebTestCase
             'to' => '2030-12-12 12:00',
             'table_id' => 3,
         ];
-
         $reservationPrice = (new ReservationPriceCalculator())
             ->getReservationPrice(
                 new \DateTime($requestParams['from']),
                 new \DateTime($requestParams['to'])
             );
-
         $expectedResponseMessage = '"'.self::OK_MESSAGE_TITLE.'":{"table_id":"'.$requestParams['table_id'].'","from":"'.$requestParams['from'].'","to":"'.$requestParams['to'].'","price_in_roubles":"'.$reservationPrice.'"}';
 
         $response = $this->getRouteResponse($requestParams);
